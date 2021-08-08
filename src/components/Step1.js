@@ -8,13 +8,17 @@ import Typography from '@material-ui/core/Typography';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { step1Schema } from '../validations';
+import { useData } from '../context/DataContext';
 
 const Step1 = () => {
+  const { data, setValues } = useData();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
+    defaultValues: { firstName: data.firstName, lastName: data.lastName },
     mode: 'onBlur',
     resolver: yupResolver(step1Schema),
   });
@@ -22,16 +26,15 @@ const Step1 = () => {
 
   const onSubmit = (data) => {
     history.push('/step2');
+    setValues(data);
   };
-
-  console.log('errors', errors);
 
   return (
     <MainContainer>
       <Typography variant="h5" component="h2">
         Step 1
       </Typography>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
           type="text"
           name="firstName"
