@@ -10,6 +10,13 @@ import { FormControlLabel } from '@material-ui/core';
 import { Checkbox } from '@material-ui/core';
 import { useHistory } from 'react-router';
 import PrimaryButton from './PrimaryButton';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
+
+const normalizePhoneNumber = (val) => {
+  const phNo = parsePhoneNumberFromString(val);
+  if (!phNo) return val;
+  return phNo.formatInternational();
+};
 
 const Step2 = () => {
   const { data, setValues } = useData();
@@ -74,12 +81,16 @@ const Step2 = () => {
         Do you have a phone?
         {hasPhone && (
           <Input
-            type="text"
+            type="tel"
+            id="phoneNumber"
             name="phoneNumber"
             label="Phone Number"
             error={!!errors?.phoneNumber}
             helperText={errors?.phoneNumber?.message}
             {...register('phoneNumber')}
+            onChange={(e) => {
+              e.target.value = normalizePhoneNumber(e.target.value);
+            }}
           />
         )}
         <PrimaryButton>Next</PrimaryButton>
