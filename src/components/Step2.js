@@ -41,12 +41,10 @@ const Step2 = () => {
   const hasPhone = watch('hasPhone');
 
   const onSubmit = (data) => {
-    console.log('data-o---', data);
     setValues(data);
-    // history.push('/step3');
+    history.push('/step3');
   };
 
-  console.log('hasPhone ????', hasPhone);
 
   return (
     <MainContainer>
